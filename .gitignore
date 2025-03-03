@@ -5,3 +5,4 @@ datasets/
 *.json
 *.png
 *.jpg
+.venv/
