@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "your-package-name"
+version = "0.1.0"
+description = "简短的项目描述"
+readme = "README.md"
+authors = [
+    {name = "您的姓名", email = "your.email@example.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "requests>=2.25.0",
+    "numpy>=1.20.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "black>=21.5b2",
+    "isort>=5.9.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/yourusername/your-repo"
+"Bug Tracker" = "https://github.com/yourusername/your-repo/issues"
+
+[tool.setuptools]
+packages = ["your_package"]
+
+[tool.black]
+line-length = 88
+target-version = ["py37"]
+
+[tool.isort]
+profile = "black"
+
+# 国内源配置
+[tool.poetry.source]
+name = "tsinghua"
+url = "https://pypi.tsinghua.edu.cn/simple"
+default = true
+
+# pip 配置 (这个实际上不是在 pyproject.toml 中生效，而是提供参考)
+# 实际使用时需要在 pip.conf 或命令行中指定
+# pip install package -i https://pypi.tsinghua.edu.cn/simple
