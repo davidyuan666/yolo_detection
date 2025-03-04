@@ -1,28 +1,30 @@
-.PHONY: install train install-pdm install-python
+# 基础变量定义
+VENV_DIR := .venv
+PYTHON := python3
+PDM := pdm
 
-# 检查并安装 Python
-install-python:
-	@echo "检查 Python 是否已安装..."
-	@which python3 > /dev/null || (echo "正在安装 Python..." && \
-	(apt-get update && apt-get install -y python3 python3-pip || \
-	 yum install -y python3 python3-pip || \
-	 brew install python3))
+# 安装依赖
+.PHONY: install
+install:
+	@echo "Installing dependencies..."
+	@# 检查 Python 是否已安装
+	@if ! command -v $(PYTHON) >/dev/null 2>&1; then \
+		echo "Python not found. Please install Python 3.8 or higher"; \
+		exit 1; \
+	fi
+	@# 检查 PDM 是否已安装
+	@if ! command -v $(PDM) >/dev/null 2>&1; then \
+		echo "PDM not found. Installing PDM..."; \
+		$(PYTHON) -m pip install --user pdm; \
+	fi
+	@# 配置 PDM 使用镜像
+	@echo "Configuring PDM to use mirror..."
+	@$(PDM) config pypi.url https://pypi.tuna.tsinghua.edu.cn/simple
+	@# 使用 PDM 创建虚拟环境并安装项目依赖
+	@echo "Installing project dependencies with PDM..."
+	@$(PDM) install --no-lock
+	@echo "Installation completed successfully!"
 
-# 安装 pdm
-install-pdm: install-python
-	@echo "安装 pdm..."
-	pip3 install pdm
-
-# 安装 ultralytics 包
-install: install-pdm
-	pdm add ultralytics
-
-# 训练模型
-train:
-	pdm run python -c "from ultralytics import YOLO; YOLO('yolov8n.yaml').train(data='coco128.yaml', epochs=3)"
-
-
-# 帮助信息
 commit:
 	git add .
 	git commit -m "update"
