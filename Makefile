@@ -29,3 +29,28 @@ commit:
 	git add .
 	git commit -m "update"
 	git push origin main
+
+
+EPOCHS := 100
+BATCH_SIZE := 16
+IMG_SIZE := 640
+DEVICE := 0
+WORKERS := 8
+MODEL := yolov8n.pt
+DATA_YAML := data.yaml
+PROJECT := runs/train
+NAME := exp
+PATIENCE := 50
+
+train:
+	pdm run python train.py \
+		--data $(DATA_YAML) \
+		--model $(MODEL) \
+		--epochs $(EPOCHS) \
+		--batch-size $(BATCH_SIZE) \
+		--imgsz $(IMG_SIZE) \
+		--device $(DEVICE) \
+		--workers $(WORKERS) \
+		--project $(PROJECT) \
+		--name $(NAME) \
+		--patience $(PATIENCE)
